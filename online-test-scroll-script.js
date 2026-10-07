@@ -1,5 +1,5 @@
 // ============================================================
-// ONLINE QUIZ SCRIPT (Timer + Analysis, No Leaderboard)
+// ONLINE QUIZ SCRIPT (Timer + Analysis)
 // ============================================================
 
 // ---------------- CONFIGURATION ----------------
@@ -110,12 +110,10 @@ function renderAllQuestions() {
 
     quizDiv.innerHTML = html;
 
-    // Question count
     if (questionCountDisplay) {
         questionCountDisplay.textContent = `Questions : ${attemptedCount}/${questions.length}`;
     }
 
-    // Progress bar
     if (progressBar) {
         const percentage = questions.length > 0 ? (attemptedCount / questions.length) * 100 : 0;
         progressBar.style.width = `${percentage}%`;
@@ -158,7 +156,6 @@ function updateTimer() {
 
     timerDiv.textContent = `🕛 ${hDisplay}:${mDisplay}:${sDisplay}`;
 
-    // Last 2 minutes warning
     if (timer <= 120) {
         timerDiv.style.color = "red";
         timerDiv.classList.add("timer-low");
@@ -186,22 +183,17 @@ function submitResults() {
     quizSubmitted = true;
     clearInterval(timerInterval);
 
-    // Lock all questions
     quizLocked = questions.map(() => true);
     renderAllQuestions();
 
-    // Hide quiz buttons
     if (submitBtn) submitBtn.style.display = "none";
     if (resetBtn) resetBtn.style.display = "none";
-
-    // Show report
     if (reportCard) reportCard.style.display = "block";
 
     const attempted = selectedAnswers.filter(v => v !== undefined).length;
     correctCount = selectedAnswers.filter((v, i) => v !== undefined && questions[i] && v === questions[i].answer).length;
     const wrong = attempted - correctCount;
 
-    // Report values
     const totalEl = document.getElementById("total");
     const attemptedEl = document.getElementById("attempted");
     const correctEl = document.getElementById("correct");
@@ -279,7 +271,7 @@ function showAnalysis() {
 }
 
 // ============================================================
-// 7. EVENT LISTENERS & SETUP
+// 7. SETUP & LISTENERS
 // ============================================================
 function restartTest() {
     location.reload();
@@ -319,7 +311,7 @@ if (backToResultsBtn) {
     };
 }
 
-// Initial setup
+// Initial Run
 loadQuestionsFromHTML();
 renderAllQuestions();
 
